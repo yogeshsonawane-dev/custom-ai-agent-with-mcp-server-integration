@@ -1,0 +1,9 @@
+langchain
+langgraph
+langchain_community
+langchain-mcp-adapters
+langchain-openai
+python-dotenv
+ipykernel
+langchain-ollama
+langchain_tavily
