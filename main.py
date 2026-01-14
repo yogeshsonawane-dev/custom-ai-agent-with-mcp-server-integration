@@ -43,7 +43,7 @@ async def initialize_agent():
     """Initialize the agent with MCP tools."""
     # Initialize the LLM
     model = init_chat_model("gpt-4.1")
-
+    famvest_api_key = os.getenv('FAMVEST_MCP_SERVER_API_KEY')
     # Initialize the MCP client with service desk configuration
     client = MultiServerMCPClient(
         {
@@ -51,7 +51,7 @@ async def initialize_agent():
                 "transport": "streamable_http",
                 "url": "https://mcp.famvest.online/mcp",
                 "headers": {
-                    "X-API-Key": "3a98d4c6b7a2e9f0d8c1b6a7e5d9f4b2a6c8e3d1"
+                    "X-API-Key": famvest_api_key
                 },
             }
         }
