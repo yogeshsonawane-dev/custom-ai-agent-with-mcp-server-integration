@@ -1,9 +1,9 @@
 import asyncio
 from langchain.agents.middleware import SummarizationMiddleware
-from langchain_core.messages import ToolMessage
+from langchain_tavily import TavilySearch
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain.chat_models import init_chat_model
-from langchain.messages import HumanMessage, SystemMessage
+from langchain.messages import HumanMessage
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain.agents import create_agent
 import os
@@ -34,8 +34,7 @@ SYSTEM_PROMPT = """
         5. Never assume success.
         6. Never suggest commands outside available MCP tools.
         7. Never fabricate command output.
-        8. Never run multiple deployments in parallel.
-        9. Prefer safety over speed.
+        8. Prefer safety over speed.
         
         If unsure, ask for clarification.
         """
@@ -52,14 +51,16 @@ async def initialize_agent():
                 "transport": "streamable_http",
                 "url": "https://mcp.famvest.online/mcp",
                 "headers": {
-                    "X-API-Key": ""
+                    "X-API-Key": "3a98d4c6b7a2e9f0d8c1b6a7e5d9f4b2a6c8e3d1"
                 },
             }
         }
     )
-    tools = await client.get_tools()
+    tavily_search_tool = TavilySearch(max_results=5, topic="general")
+    mcp_tools = await client.get_tools()
+    tools = mcp_tools + [tavily_search_tool]
 
-    # Create the agent with summarization middleware and in-memory checkpointing
+    # Create the agent with in-memory checkpointing
     agent = create_agent(
         model=model,
         tools=tools,
