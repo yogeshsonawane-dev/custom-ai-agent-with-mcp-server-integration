@@ -49,10 +49,15 @@ async def initialize_agent():
         {
             "linux-app-deployer": {
                 "transport": "streamable_http",
-                "url": "https://mcp.famvest.online/mcp",
+                "url": "https://mcp.adminhub.famvest.online/mcp",
                 "headers": {
                     "X-API-Key": famvest_api_key
                 },
+            },
+            "famvest-app": {
+                "transport": "streamable_http",
+                "url": "https://mcp.trade.famvest.online/mcp",
+
             }
         }
     )
